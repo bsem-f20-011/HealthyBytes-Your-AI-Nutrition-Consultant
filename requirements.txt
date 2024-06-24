@@ -1,0 +1,5 @@
+gradio
+openai
+azure-cognitiveservices-speech
+python-dotenv
+boto3
