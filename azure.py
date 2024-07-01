@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import azure.cognitiveservices.speech as speechsdk
 import wave
 
+
 # Loads and set environment variables
 load_dotenv(".env")
 api_key = os.getenv("OPENAI_API_KEY")

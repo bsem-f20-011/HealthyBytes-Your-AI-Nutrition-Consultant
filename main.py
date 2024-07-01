@@ -182,6 +182,8 @@ interface2 = gr.Interface(
     description="For better assistance, could you explain what led to this emergency?"
 )
 
+
+
 # Combined interface with tabs
 app = gr.TabbedInterface([interface1, interface2], ["Nutrition Consultant", "Emergency Assistance"], title="HealthyBytes: Your AI Nutrition Consultant")
 
