@@ -45,7 +45,7 @@
 
                     </ul>
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item" style="background-color: brown; margin-left: 20px; padding: 0px 5px; border-radius: 4px;"><a href="http://127.0.0.1:7860/" class="nav-link">Live chat GPT</a></li>
+                        <li class="nav-item" style="background-color: brown; margin-left: 20px; padding: 0px 5px; border-radius: 4px;"><a href="http://127.0.0.1:7860/" class="nav-link">Nutrition Consultant</a></li>
                         <li class="nav-item" style="background-color: brown; margin-left: 20px; padding: 0px 5px; border-radius: 4px;"><a href="" class="nav-link">Emergency Assistance</a></li>
                     </ul>
                 </div>
@@ -110,7 +110,7 @@
             <div class="row team-container">
                 <div class="col-lg-3 col-md-4 col-sm-6 team-item">
                     <div class="team-img">
-                        <img src="img/team-1.jpg" class="img-fluid" alt="Team Image">
+                        <img src="img/sma.jpg" class="img-fluid" alt="Team Image">
                         <div class="team-link">
                             <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
                             <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -128,7 +128,7 @@
 
                 <div class="col-lg-3 col-md-4 col-sm-6 team-item">
                     <div class="team-img">
-                        <img src="img/team-2.jpg" class="img-fluid" alt="Team Image">
+                        <img src="img/sadnan.jpg" class="img-fluid" alt="Team Image">
                         <div class="team-link">
                             <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
                             <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -139,7 +139,7 @@
                     </div>
 
                     <div class="team-info">
-                        <h4>M Adnan Raqid</h4>
+                        <h4>M Adnan Rafiq</h4>
                         <p>Digital Marketer & SEO Expert</p>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
 
                 <div class="col-lg-3 col-md-4 col-sm-6 team-item">
                     <div class="team-img">
-                        <img src="img/team-4.jpg" class="img-fluid" alt="Team Image">
+                        <img src="img/team-1.jpg" class="img-fluid" alt="Team Image">
                         <div class="team-link">
                             <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
                             <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -195,7 +195,7 @@
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <div class="service-img">
-                        <img src="img/service-1.jpg" alt="Service Image">
+                        <img src="img/nutrition.png" alt="Service Image">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -213,7 +213,7 @@
             <div class="row align-items-center">
                 <div class="col-md-6 d-md-none d-sm-block">
                     <div class="service-img">
-                        <img src="img/service-2.jpg" alt="Service Image">
+                        <img src="img/emerg.jpg" alt="Service Image">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -229,7 +229,7 @@
                 </div>
                 <div class="col-md-6 d-sm-none d-md-block">
                     <div class="service-img">
-                        <img src="img/service-2.jpg" alt="Service Image">
+                        <img src="img/emerg.jpg" alt="Service Image">
                     </div>
                 </div>
             </div>

@@ -83,7 +83,7 @@ def synthesize_speech(text, filename="output.mp3"):
 
     return filename
 
-def chatbot_response(user_input="", gender=None, weight=None, height=None, audio_input=None):
+def chatbot_response(user_input="", gender=None, weight=None, height=None, age=None, audio_input=None):
     transcription, response = "", ""  # Initialize variables for transcription and response
     error_message = ""  # Initialize error_message at the start of the function
 
@@ -100,12 +100,12 @@ def chatbot_response(user_input="", gender=None, weight=None, height=None, audio
     if error_message:
         return error_message, ""  # Return the error with an empty second value
 
-    detailed_input = f"User details - Gender: {gender}, Weight: {weight} kg, Height: {height} cm. Question: {user_input}"
+    detailed_input = f"User details - Gender: {gender}, Weight: {weight} kg, Height: {height} cm, Age: {age}, medical_issue: {user_input}"
     try:
         completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a nutrition consultant AI. Please decide weight gain or loss according to the user input and always mention what type of meal you are providing, the weight gain meal or loss or anyother type"},
+                {"role": "system", "content": "You are a specialized AI nutrition consultant. Your primary role is to generate personalized meal plans for weight gain, weight loss, or maintenance based on user input. Always specify the type of meal plan you are providing (weight gain, weight loss, or other). If a question outside of nutrition and diet planning is asked, briefly introduce yourself and clarify that you only provide nutrition and diet-related guidance"},
                 {"role": "user", "content": detailed_input},
             ]
         )
@@ -137,7 +137,7 @@ def emergency_assistance(query, audio_input=None):
         completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "As an AI serving as an best emergency medical assistant for emergeny accidents like sanke bit or road accident"},
+                {"role": "system", "content": "You are a specialized AI nutrition consultant. Your primary role is to generate personalized meal plans for weight gain, weight loss, or maintenance based on user input, using the user's age, gender, height, and any mentioned medical conditions to calculate BMR. Always specify the type of meal plan you are providing (weight gain, weight loss, or other). If a question outside of nutrition and diet planning is asked, briefly introduce yourself and clarify that you only provide nutrition and diet-related guidance. Additionally, if a user mentions any medical health issues, acknowledge it, remind them to consult a healthcare professional, and proceed with nutrition advice accordingly"},
                 {"role": "user", "content": query},
             ]
         )
@@ -152,7 +152,7 @@ def emergency_assistance(query, audio_input=None):
 interface1 = gr.Interface(
     fn=chatbot_response,
     inputs=[
-        gr.Textbox(lines=5, label="Input Here", placeholder="Type or say your question here..."),
+        gr.Textbox(lines=5, label="Enter Special Medical health and Weight Goal here", placeholder="Type or say your question here..."),
         gr.Radio(choices=["Male", "Female", "Other"], label="Gender"),
         gr.Number(label="Weight (kg)", info="Enter your weight in kg"),
         gr.Number(label="Height (cm)", info="Enter your height in cm"),

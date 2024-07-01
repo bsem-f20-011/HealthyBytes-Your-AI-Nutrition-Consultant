@@ -2,7 +2,7 @@ import gradio as gr
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
-import azure.cognitiveservices.speech as speechsdk
+import azure.cognitiveservices.speech as speechsdk # type: ignore
 import wave
 
 
