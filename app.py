@@ -4,18 +4,21 @@ import os
 import urllib
 import boto3
 import gradio as gr
-from openai import OpenAI
-import os
+from dotenv import load_dotenv
+from transformers import LlamaForCausalLM, LlamaTokenizer
+# from transformers import T5Tokenizer, T5ForConditionalGeneration
+import torch  
 import time
 import json
-from dotenv import load_dotenv
 
-# Loads and set environment variables
+# Loads and sets environment variables
 load_dotenv(".env")
-api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=api_key)
 access_key = os.getenv('access_key')
 secret_key = os.getenv('secret_key')
+
+# Load FLAN-T5 model and tokenizer
+tokenizer = LlamaTokenizer.from_pretrained("/output/path")
+model = LlamaForCausalLM.from_pretrained("/output/path")
 
 def recognize_from_microphone(file_info):
     if not file_info:
@@ -83,6 +86,18 @@ def synthesize_speech(text, filename="output.mp3"):
 
     return filename
 
+def generate_response(input_text):
+    inputs = tokenizer(input_text, return_tensors="pt", max_length=512, truncation=True)
+    print(inputs)
+    outputs = model.generate(
+        inputs.input_ids, 
+        max_length=2024,  # Increase the max length for more detailed responses
+        num_beams=20,     # Increase the number of beams for better search
+        early_stopping=True
+    )
+    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    return response
+
 def chatbot_response(user_input="", gender=None, weight=None, height=None, age=None, audio_input=None):
     transcription, response = "", ""  # Initialize variables for transcription and response
     error_message = ""  # Initialize error_message at the start of the function
@@ -100,16 +115,14 @@ def chatbot_response(user_input="", gender=None, weight=None, height=None, age=N
     if error_message:
         return error_message, ""  # Return the error with an empty second value
 
-    detailed_input = f"User details - Gender: {gender}, Weight: {weight} kg, Height: {height} cm, Age: {age}, medical_issue: {user_input}"
+    detailed_input = (
+        f"User details: Gender: {gender}, Weight: {weight} kg, Height: {height} cm, Age: {age}.\n"
+        f"Medical issue or query: {user_input}.\n"
+        "Please provide a detailed and comprehensive response that includes personalized advice, "
+        "potential dietary recommendations, and any important considerations the user should keep in mind."
+    )
     try:
-        completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a specialized AI nutrition consultant. Your primary role is to generate personalized meal plans for weight gain, weight loss, or maintenance based on user input. Always specify the type of meal plan you are providing (weight gain, weight loss, or other). If a question outside of nutrition and diet planning is asked, briefly introduce yourself and clarify that you only provide nutrition and diet-related guidance"},
-                {"role": "user", "content": detailed_input},
-            ]
-        )
-        response = completion.choices[0].message.content
+        response = generate_response(detailed_input)
         if response:
             audio_path = synthesize_speech(response)
             return transcription, response, audio_path  # Return audio path along with text and transcription
@@ -133,15 +146,13 @@ def emergency_assistance(query, audio_input=None):
     if error_message:
         return error_message, ""  # Return the error with an empty second value
 
+    detailed_input = (
+        f"Emergency query: {query}.\n"
+        "Please provide a detailed and comprehensive response that addresses the emergency situation, "
+        "potential actions the user should take, and any important considerations the user should keep in mind."
+    )
     try:
-        completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "As an AI serving as an best emergency medical assistant for emergeny accidents like sanke bit or road accident"},
-                {"role": "user", "content": query},
-            ]
-        )
-        response = completion.choices[0].message.content
+        response = generate_response(detailed_input)
         if response:
             audio_path = synthesize_speech(response)
             return transcription, response, audio_path  # Return audio path along with text and transcription
@@ -181,8 +192,6 @@ interface2 = gr.Interface(
     title="Emergency Assistance",
     description="For better assistance, could you explain what led to this emergency?"
 )
-
-
 
 # Combined interface with tabs
 app = gr.TabbedInterface([interface1, interface2], ["Nutrition Consultant", "Emergency Assistance"], title="HealthyBytes: Your AI Nutrition Consultant")

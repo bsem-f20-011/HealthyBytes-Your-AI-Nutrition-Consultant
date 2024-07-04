@@ -6,6 +6,7 @@ import azure.cognitiveservices.speech as speechsdk # type: ignore
 import wave
 
 
+
 # Loads and set environment variables
 load_dotenv(".env")
 api_key = os.getenv("OPENAI_API_KEY")
@@ -20,18 +21,22 @@ def recognize_from_microphone(file_info):
     file_path = file_info
     print(f"File path received: {file_path}")  # Verify file path
 
+
     # Check file existence
     if not os.path.exists(file_path):
         return f"File not found: {file_path}", ""
+
 
     # Configure Azure Speech SDK
     speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=os.environ['SPEECH_REGION'])
     speech_config.speech_recognition_language = "en-US"
     audio_config = speechsdk.audio.AudioConfig(filename=file_path)
 
+
     # Create recognizer and recognize once
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
     result = speech_recognizer.recognize_once()
+
 
     # Handle recognition result
     if result.reason == speechsdk.ResultReason.RecognizedSpeech:
@@ -55,11 +60,47 @@ def synthesize_speech(text, filename="output.wav"):
 
     if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
         print(f"Speech synthesized for text [{text}] and saved to {filename}")
+   
     else:
         print(f"Failed to synthesize speech for text [{text}]")
     return filename
 
 
+
+# def chatbot_response(user_input="", gender=None, plan_type=None, weight=None, age=age, height=None, audio_input=None):
+#     transcription, response = "", ""  # Initialize variables for transcription and response
+#     error_message = ""  # Initialize error_message at the start of the function
+
+#     if audio_input:
+#         transcription, error = recognize_from_microphone(audio_input)
+#         if error:
+#             error_message = error  # Capture the error to return it properly
+#         else:
+#             user_input = transcription  # Use the transcription if there's no error
+
+#     # Check if there's user input or transcription, and there's no error message
+#     if not user_input.strip() and not transcription.strip() and not error_message:
+#         error_message = "Please provide audio input or type your question."
+
+#     if error_message:
+#         return error_message, ""  # Return the error with an empty second value
+
+#     # Process user_input as before (assuming previous code handled it)
+#     detailed_input = f"User details - Gender: {gender}, Plan Type: {plan_type}, age: {age} Weight: {weight} kg, Height: {height} cm. Question: {user_input}"
+#     try:
+#         completion = client.chat.completions.create(
+#             model="gpt-3.5-turbo",
+#             messages=[
+#                 {"role": "system", "content": "You are a nutrition consultant AI, capable of providing natural diet plans and emergency assistance based on user inputs."},
+#                 {"role": "user", "content": detailed_input},
+#             ]
+#         )
+#         response = completion.choices[0].message.content
+#         if response:
+#             audio_path = synthesize_speech(response)
+#             return transcription, response, audio_path  # Return audio path along with text and transcription
+#     except Exception as e:
+#         return transcription, f"An error occurred during response generation: {str(e)}"  # Return both values even in case of an exception
 
 def chatbot_response(user_input="", gender=None, plan_type=None, weight=None, height=None, audio_input=None):
     transcription, response = "", ""  # Initialize variables for transcription and response
